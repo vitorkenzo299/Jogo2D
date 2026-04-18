@@ -11,7 +11,7 @@ public static class CenaGameOver
     
     public static void Init()
     {
-        collectableCount = 4;
+        collectableCount = 8;
     }
 
     public static void Collect()
