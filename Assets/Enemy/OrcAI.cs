@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 namespace Enemy
@@ -7,13 +6,11 @@ namespace Enemy
     {
         [SerializeField] private float speed = 2f;
         [SerializeField] private Animator animator;
-        [SerializeField] private float damageCooldown = 1f;
 
         private Rigidbody2D rb;
         private Transform player;
         private bool canSeePlayer;
         private Vector2 lastDirection;
-        private bool canDamage = true;
 
         private void Start()
         {
@@ -75,24 +72,6 @@ namespace Enemy
                 player = null;
                 rb.linearVelocity = Vector2.zero;
             }
-        }
-
-        private void OnCollisionEnter2D(Collision2D other)
-        {
-            if (!canDamage) return;
-
-            if (other.collider.CompareTag("Player"))
-            {
-                CenaGameOver.TakeDamage(1);
-                StartCoroutine(DamageCooldown());
-            }
-        }
-
-        private IEnumerator DamageCooldown()
-        {
-            canDamage = false;
-            yield return new WaitForSeconds(damageCooldown);
-            canDamage = true;
         }
     }
 }
