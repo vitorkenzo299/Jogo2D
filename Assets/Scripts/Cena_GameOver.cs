@@ -2,28 +2,49 @@ using UnityEngine;
 
 public static class CenaGameOver
 {
-    private static int collectableCount;
+    private static int totalCollectables;
+    private static int collectedCollectables;
     private static int playerLives;
 
-    public static bool gameOver
-    {
-        get { return playerLives <= 0; }
-    }
+    private static float elapsedTime;
+    private static float finalTime;
 
-    public static int Lives
-    {
-        get { return playerLives; }
-    }
+    public static bool HasWon => collectedCollectables >= totalCollectables;
+    public static bool HasLost => playerLives <= 0;
+    public static bool GameEnded => HasWon || HasLost;
+
+    public static int Lives => playerLives;
+    public static int CollectedCollectables => collectedCollectables;
+    public static int TotalCollectables => totalCollectables;
+
+    public static float ElapsedTime => elapsedTime;
+    public static float FinalTime => finalTime;
 
     public static void Init()
     {
-        collectableCount = 8;
+        totalCollectables = 8;
+        collectedCollectables = 0;
         playerLives = 5;
+
+        elapsedTime = 0f;
+        finalTime = 0f;
+    }
+
+    public static void AddTime(float deltaTime)
+    {
+        if (!GameEnded)
+            elapsedTime += deltaTime;
+    }
+
+    public static void FinishRun()
+    {
+        finalTime = elapsedTime;
     }
 
     public static void Collect()
     {
-        collectableCount--;
+        if (collectedCollectables < totalCollectables)
+            collectedCollectables++;
     }
 
     public static void TakeDamage(int damage)
@@ -32,5 +53,12 @@ public static class CenaGameOver
 
         if (playerLives < 0)
             playerLives = 0;
+    }
+
+    public static string FormatTime(float time)
+    {
+        int minutes = Mathf.FloorToInt(time / 60f);
+        int seconds = Mathf.FloorToInt(time % 60f);
+        return $"{minutes:00}:{seconds:00}";
     }
 }

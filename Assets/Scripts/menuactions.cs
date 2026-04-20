@@ -7,12 +7,12 @@ public class NewMonoBehaviourScript : MonoBehaviour
     {
         Time.timeScale = 1f;
         CenaGameOver.Init();
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("Jogo");
     }
 
     public void Menu()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("MainMenu");
     }
 }

@@ -9,13 +9,16 @@ namespace Player
         [SerializeField] private GameObject projectilePrefab;
         [SerializeField] private float projectileSpawnOffset = 0.45f;
         [SerializeField] private float attackCooldown = 0.80f;
-
+        [SerializeField] private AudioClip swordSfx;
+        private AudioSource audioSource;
         private PlayerMovement playerMovement;
         private Vector2 lastDirection = Vector2.down;
         private bool canAttack = true;
-
+        
         private void Start()
         {
+            audioSource = GetComponent<AudioSource>();
+            
             if (animator == null)
                 animator = GetComponent<Animator>();
 
@@ -31,7 +34,7 @@ namespace Player
                     lastDirection = dir;
             }
 
-            if (Input.GetMouseButtonDown(0) && canAttack)
+            if ((Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.JoystickButton5)) && canAttack)
             {
                 Attack();
             }
@@ -46,6 +49,11 @@ namespace Player
                 animator.SetFloat("Horizontalidle", lastDirection.x);
                 animator.SetFloat("Verticalidle", lastDirection.y);
                 animator.SetTrigger("Ataque");
+            }
+            
+            if (audioSource != null && swordSfx != null)
+            {
+                audioSource.PlayOneShot(swordSfx);
             }
 
             Vector2 dir = lastDirection.normalized;
